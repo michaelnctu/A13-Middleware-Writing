@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
 
   var resRaw = Date.now()  //擷取req請求的時間 格式內建
   var resTime = new Date(resRaw)
-  totalTime = resTime - reqTime
+  var totalTime = resTime - reqTime
 
   YYYY = resTime.getFullYear(); //年份
   MM = resTime.getMonth() + 1; //月份
@@ -38,7 +38,6 @@ app.use(function (req, res, next) {
 
 
 app.get('/', (req, res) => {
-  console.log('in / mode')
   res.send('列出全部 Todo')
 })
 
