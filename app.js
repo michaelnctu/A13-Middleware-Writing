@@ -4,28 +4,41 @@ const app = express()
 const port = 3000
 
 
-//擷取當下之時間
-function getTime() {
-  var nowRaw = Date.now() //現在時間原始格式
-  var time = new Date(nowRaw)
-  // console.log (time.toString())
+app.use(function (req, res, next) {
+  var reqRaw = Date.now()  //擷取req請求的時間 格式內建
+  var reqTime = new Date(reqRaw)  //換格式
 
+  var YYYY = reqTime.getFullYear(); //年份
+  var MM = reqTime.getMonth() + 1; //月份
+  var DD = reqTime.getDate(); //日期
+  var HH = reqTime.getHours(); //時
+  var mm = reqTime.getMinutes(); //分
+  var ss = reqTime.getSeconds(); //秒
 
-  var YYYY = time.getFullYear(); //年份
-  var MM = time.getMonth() + 1; //月份
-  var DD = time.getDate(); //日期
-  var HH = time.getHours(); //時
-  var mm = time.getMinutes(); //分
-  var ss = time.getSeconds(); //秒
-
-  console.log(YYYY + '-' + MM + '-' + DD + ' ' + HH + ':' + mm + ':' + ss);
+  console.log(`Req Time: ${YYYY}-${MM}-${HH}:${HH}:${ss} | ${req.method} from ${req.originalUrl}`);
 
   next();
-}
 
-app.use(getTime)
+  var resRaw = Date.now()  //擷取req請求的時間 格式內建
+  var resTime = new Date(resRaw)
+  totalTime = resTime - reqTime
+
+  YYYY = resTime.getFullYear(); //年份
+  MM = resTime.getMonth() + 1; //月份
+  DD = resTime.getDate(); //日期
+  HH = resTime.getHours(); //時
+  mm = resTime.getMinutes(); //分
+  ss = resTime.getSeconds(); //秒
+
+
+  console.log(`Res time = ${YYYY}-${MM}-${HH}:${HH}:${ss} | ${req.method} from ${req.originalUrl} | total time: ${totalTime} ms`)
+
+
+});
+
 
 app.get('/', (req, res) => {
+  console.log('in / mode')
   res.send('列出全部 Todo')
 })
 
@@ -41,6 +54,8 @@ app.post('/', (req, res) => {
   res.send('新增一筆  Todo')
 })
 
+
 app.listen(port, () => {
   console.log(`App running on port ${port}`)
 })
+
